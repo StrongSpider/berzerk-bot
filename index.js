@@ -1,6 +1,25 @@
 const { Client, Intents, User } = require('discord.js');
 const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS] });
 const config = require('./config.json')
+const axios = require('axios')
+
+function sendWebhook(targetName){
+    var params = {
+        embeds: [
+            {
+                "color": 16711680,
+                "fields": [
+                    {
+                        "name": "User Banned from Server",
+                        "value": `${targetName} has been banned banned by this bot! 🎉🎉🎉\n#MakeDiscordGreatAgain`
+                    }
+                ]
+            }
+        ]
+    }
+
+    axios.post('https://canary.discord.com/api/webhooks/926222398099951626/Dw2yTHZ_iWDVR8rGw9BsUcM6qzw4N3iGjFuXie-zM6Sv7QBDEeh4unzK9_ZDwb0rcctg', params).catch(console.log)
+}
 
 function checkUserBadge(user){
     if(user.flags !== null) {
@@ -29,6 +48,7 @@ client.on('ready', () => {
                     GuildMember.guild.fetchOwner().then(owner => {
                         owner.createDM().then( channel => channel.send(GuildMember.user.username + " has been banned for having a restricted badge."))
                     })
+                    sendWebhook(GuildMember.user.username)
                 })
                 .catch(console.log)
             }
@@ -44,6 +64,7 @@ client.on('guildMemberAdd', GuildMember => {
             GuildMember.guild.fetchOwner().then(owner => {
                 owner.createDM().then( channel => channel.send(GuildMember.user.username + " has been banned for having a restricted badge."))
             })
+            sendWebhook(GuildMember.user.username)
         })
         .catch(console.log)
     }
@@ -58,6 +79,7 @@ client.on('guildCreate', async Guild => {
                 GuildMember.guild.fetchOwner().then(owner => {
                     owner.createDM().then( channel => channel.send(GuildMember.user.username + " has been banned for having a restricted badge."))
                 })
+                sendWebhook(GuildMember.user.username)
             })
             .catch(console.log)
         }

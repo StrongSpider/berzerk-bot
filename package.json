@@ -1,0 +1,22 @@
+{
+  "name": "berzerk-bot",
+  "version": "0.0.1",
+  "description": "Making discord great again.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/StrongSpider/berzerk-bot.git"
+  },
+  "author": "StrongSpider",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/StrongSpider/berzerk-bot/issues"
+  },
+  "homepage": "https://github.com/StrongSpider/berzerk-bot#readme",
+  "dependencies": {
+    "discord.js": "^13.5.0"
+  }
+}

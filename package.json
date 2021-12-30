@@ -1,6 +1,6 @@
 {
   "name": "berzerk-bot",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Making discord great again.",
   "main": "index.js",
   "scripts": {

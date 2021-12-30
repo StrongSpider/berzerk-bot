@@ -49,6 +49,8 @@ function checkUserBadge(user){
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
+    //client.user.bannerURL('https://i.ibb.co/R4NsnM4/Bot-Banner.png')
+    client.user.setPresence({ activities: [{ name: 'Making Discord Great Again' }]})
     client.guilds.cache.forEach( Guild => {
         Guild.members.cache.forEach( GuildMember => {
             if (checkUserBadge(GuildMember.user)){

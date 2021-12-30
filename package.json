@@ -18,5 +18,8 @@
   "homepage": "https://github.com/StrongSpider/berzerk-bot#readme",
   "dependencies": {
     "discord.js": "^13.5.0"
-  }
+  },
+  "engines":{
+    "node":"17.3.0"
+ }
 }

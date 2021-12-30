@@ -3,6 +3,16 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 const config = require('./config.json')
 const axios = require('axios')
 
+//Heroku Uptime stuff so bot doesnt DC
+const express = require("express")
+const app = express()
+app.use(express.static("public"))
+
+app.get("/", function (req, res) {
+    res.send("<h1>Bot is online!</h1>")
+})
+app.listen(process.env.PORT || 3000, () => console.log("Server is running..."));
+
 function sendWebhook(targetName){
     var params = {
         embeds: [

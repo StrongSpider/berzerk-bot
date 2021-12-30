@@ -9,7 +9,7 @@ const app = express()
 app.use(express.static("public"))
 
 app.get("/", function (req, res) {
-    res.send("<h1>Bot is online!</h1>")
+    res.redirect("https://github.com/StrongSpider/berzerk-bot")
 })
 app.listen(process.env.PORT || 3000, () => console.log("Server is running..."));
 

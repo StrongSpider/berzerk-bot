@@ -13,21 +13,6 @@ app.get("/", function (req, res) {
 })
 app.listen(process.env.PORT || 3000, () => console.log("Server is running..."));
 
-//Logging Embed parameters
-var loggingParams = {
-    embeds: [
-        {
-            "color": 16711680,
-            "fields": [
-                {
-                    "name": "User Banned from Server",
-                    "value": `${targetName} has been banned banned by this bot! 🎉🎉🎉\n#MakeDiscordGreatAgain`
-                }
-            ]
-        }
-    ]
-}
-
 function checkUserBadge(GuildMember) {
     let user = GuildMember.user
 
@@ -51,10 +36,25 @@ function checkUserBadge(GuildMember) {
                                     owner.createDM().then(channel => channel.send(user.username + " has been banned for having a restricted badge."))
                                 })
 
+                                //Logging Embed parameters
+                                var loggingParams = {
+                                    embeds: [
+                                        {
+                                            "color": 16711680,
+                                            "fields": [
+                                                {
+                                                    "name": "User Banned from Server",
+                                                    "value": `${user.username} has been banned banned by this bot! 🎉🎉🎉\n#MakeDiscordGreatAgain`
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+
                                 //Log Bans in main Discord
                                 axios.post(config.loggingWebhook, loggingParams).catch(console.log)
                             })
-                        .catch(console.log)
+                            .catch(console.log)
                     }
                 }
             }

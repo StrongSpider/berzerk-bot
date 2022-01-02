@@ -3,6 +3,9 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 const config = require('./config.json')
 const axios = require('axios')
 
+//Discord Tags
+const tags = ["DISCORD_EMPLOYEE", "TEAM_USER", "DISCORD_CERTIFIED_MODERATOR"],
+
 //Heroku Uptime stuff so bot doesnt DC
 const express = require("express")
 const app = express()
@@ -21,7 +24,7 @@ function checkUserBadge(GuildMember) {
     if (user.flags !== null) {
         const flags = user.flags.serialize();
         for (const [key, value] of Object.entries(flags)) {
-            for (const badge of config.tags) {
+            for (const badge of tags) {
                 //Checks if user badge is on the naughty list
                 if (key === badge) {
                     if (value) {

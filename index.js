@@ -1,10 +1,11 @@
-const { Client, Intents } = require('discord.js');
-const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS] });
+const { Client, Intents, Message } = require('discord.js');
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_PRESENCES, Intents.FLAGS.GUILD_MEMBERS, Intents.FLAGS.GUILD_MESSAGES] });
 const config = require('./config.json')
 const axios = require('axios')
 
 //Heroku Uptime stuff so bot doesnt DC
-const express = require("express")
+const express = require("express");
+const { channel } = require('diagnostics_channel');
 const app = express()
 app.use(express.static("public"))
 
@@ -62,6 +63,22 @@ function checkUserBadge(GuildMember) {
     }
 }
 
+function checkForPathos(Guild) {
+    var channels = Guild.channels.cache.filter(ch => ch.type === 'GUILD_TEXT');
+    for (var GUILD_TEXT of channels) {
+        GUILD_TEXT[1].messages.fetch()
+            .then(messages => messages.forEach(msg => {
+                var member = Guild.members.cache.find(member => member.user.id === msg.author.id)
+                if (msg.content.includes('pathos') && member) {
+                    member.ban({ reason: "Said pathos" })
+                        .then(() => msg.channel.send(`Banned user for using the phrase 'pathos': ${user.tag}`))
+                        .catch(() => console.log('I was unable to ban the member!'));
+                }
+            }))
+            .catch(console.error);
+    }
+}
+
 client.on('ready', () => {
     //Sets presence
     console.log(`Logged in as ${client.user.tag}!`);
@@ -71,6 +88,7 @@ client.on('ready', () => {
     //Checks all guilds for any badge updates when bot was offline
     client.guilds.cache.forEach(Guild => {
         Guild.members.cache.forEach(checkUserBadge);
+        checkForPathos(Guild)
     });
 });
 
@@ -79,9 +97,20 @@ client.on('guildMemberAdd', GuildMember => {
     checkUserBadge(GuildMember);
 });
 
+//Pathos on message
+client.on('messageCreate', Message => {
+    if (Message.content.includes('pathos') && Message.member) {
+        Message.member.ban({ reason: "Said pathos" })
+            .then(() => Message.channel.send(`Banned user for using the phrase 'pathos': ${Message.member.user.tag}`))
+            .catch(() => console.log('I was unable to ban the member!'));
+    }
+})
+
+
 client.on('guildCreate', async Guild => {
     //Checks all members badge when bot joins server
     Guild.members.cache.forEach(checkUserBadge);
+    checkForPathos(Guild)
 });
 
 client.login(config.token);
